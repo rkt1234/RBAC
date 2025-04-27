@@ -10,12 +10,6 @@ function Blogs() {
   useEffect(() => {
     const loadBlogs = async () => {
       try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          navigate('/login'); // Temporary protection before Phase 4
-          return;
-        }
-
         const res = await fetchBlogs();
         setBlogs(res.data.blogs);
       } catch (err) {
