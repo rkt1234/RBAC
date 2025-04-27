@@ -1,10 +1,9 @@
 import axios from 'axios';
 
 const API = axios.create({
-    baseURL: `${process.env.REACT_APP_API_URL}/blogs`,
-});  
+  baseURL: `${process.env.REACT_APP_API_URL}/blogs`,
+});
 
-// Attach token to every request
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -13,5 +12,6 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-// API to get all blogs
 export const fetchBlogs = () => API.get('/');
+
+export const createBlog = (blogData) => API.post('/', blogData);
