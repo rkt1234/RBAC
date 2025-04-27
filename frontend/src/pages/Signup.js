@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { signup } from '../api/auth';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 function Signup() {
   const navigate = useNavigate();
+  const { login: loginUser } = useAuth();
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState('');
 
@@ -15,7 +17,7 @@ function Signup() {
     e.preventDefault();
     try {
       const res = await signup(formData);
-      localStorage.setItem('token', res.data.token);
+      loginUser(res.data.token, res.data.user.role);
       navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Signup failed');

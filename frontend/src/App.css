@@ -79,3 +79,20 @@
   font-size: 1rem;
   resize: vertical;
 }
+
+.navbar {
+  background-color: #f0f0f0;
+  padding: 15px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.navbar a, .navbar button {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+}

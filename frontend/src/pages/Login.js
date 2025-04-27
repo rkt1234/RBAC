@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { login } from '../api/auth';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 function Login() {
   const navigate = useNavigate();
+  const { login: loginUser } = useAuth();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
 
@@ -15,7 +17,7 @@ function Login() {
     e.preventDefault();
     try {
       const res = await login(formData);
-      localStorage.setItem('token', res.data.token);
+      loginUser(res.data.token, res.data.user.role)
       navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');

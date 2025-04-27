@@ -7,6 +7,7 @@ import CreateBlog from './pages/CreateBlog';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
+import AdminRoute from './components/AdminRoute';
 
 function App() {
   return (
@@ -23,9 +24,9 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/create-blog" element={
-            <ProtectedRoute>
+            <AdminRoute>
               <CreateBlog />
-            </ProtectedRoute>
+            </AdminRoute>
           } />
         </Routes>
       </Router>
