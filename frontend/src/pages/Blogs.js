@@ -3,6 +3,8 @@ import { fetchBlogs } from '../api/blog';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Link } from 'react-router-dom';
+import { deleteBlog } from '../api/blog';
+import { toast } from 'react-toastify';
 
 function Blogs() {
     const [blogs, setBlogs] = useState([]);
@@ -35,6 +37,19 @@ function Blogs() {
         return <div>Loading blogs...</div>;
     }
 
+    const handleDelete = async (blogId) => {
+        const confirmed = window.confirm('Are you sure you want to delete this blog?');
+        if (!confirmed) return;
+
+        try {
+            await deleteBlog(blogId);
+            toast.success('Blog deleted successfully!');
+            setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== blogId));
+        } catch (err) {
+            toast.error(err.response?.data?.message || 'Failed to delete blog');
+        }
+    };
+
 
     return (
         <div className="blogs-page">
@@ -51,9 +66,12 @@ function Blogs() {
                             <p>{blog.content}</p>
                             <p><small>By: {blog.author.name} ({blog.author.email})</small></p>
                             {role === 'ADMIN' && (
-                                <Link to={`/edit-blog/${blog.id}`}>
-                                    <button className="edit-btn">Edit</button>
-                                </Link>
+                                <>
+                                    <Link to={`/edit-blog/${blog.id}`}>
+                                        <button className="edit-btn">Edit</button>
+                                    </Link>
+                                    <button className="delete-btn" onClick={() => handleDelete(blog.id)}>Delete</button>
+                                </>
                             )}
                         </div>
                     ))}
