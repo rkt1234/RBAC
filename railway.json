@@ -1,8 +1,14 @@
 {
     "build": {
-      "builder": "NIXPACKS",
-      "buildCommand": "cd backend && npm install && npm run build",
-      "startCommand": "cd backend && npm start"
-    }
+        "builder": "nixpacks",
+        "buildCommand": "echo building!",
+        "startCommand": "cd backend && npm start"
+        },
+      "deploy": {
+        "startCommand": "echo starting!",
+        "healthcheckPath": "/",
+        "healthcheckTimeout": 100,
+        "restartPolicyType": "never"
+        }
   }
   
