@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { fetchBlogs } from '../api/blog';
+import { createBlog, fetchBlogs } from '../api/blog';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import { deleteBlog } from '../api/blog';
 import { toast } from 'react-toastify';
+import socket from '../socket'; 
 
 function Blogs() {
     const [blogs, setBlogs] = useState([]);
@@ -13,29 +14,55 @@ function Blogs() {
     const [loading, setLoading] = useState(true);
     const { role } = useAuth();
 
-    useEffect(() => {
-        const loadBlogs = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    navigate('/login');
-                    return;
-                }
-                const res = await fetchBlogs();
-                setBlogs(res.data.blogs);
-            } catch (err) {
-                setError(err.response?.data?.message || 'Failed to load blogs');
-            } finally {
-                setLoading(false);
+    const loadBlogs = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                navigate('/login');
+                return;
             }
-        };
+            const res = await fetchBlogs();
+            setBlogs(res.data.blogs);
+        } catch (err) {
+            setError(err.response?.data?.message || 'Failed to load blogs');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
 
         loadBlogs();
+
     }, [navigate]);
+
+    useEffect(()=>{
+        socket.on('connect', () => {
+            console.log('Connected to WebSocket Server:', socket.id);
+          });
+        socket.on('blog_created', () => {
+            loadBlogs();
+          });
+        
+          socket.on('blog_updated', () => {
+            loadBlogs();
+          });
+        
+          socket.on('blog_deleted', (res) => {
+            loadBlogs();
+          });
+
+        return () => {
+            socket.off('blog_created');
+            socket.off('blog_updated');
+            socket.off('blog_deleted');
+        }
+    }, [])
 
     if (loading) {
         return <div>Loading blogs...</div>;
     }
+
 
     const handleDelete = async (blogId) => {
         const confirmed = window.confirm('Are you sure you want to delete this blog?');
