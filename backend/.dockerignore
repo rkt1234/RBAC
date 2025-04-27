@@ -1,0 +1,12 @@
+node_modules
+.env
+prisma/dev.db
+frontend/
+backend/node_modules
+backend/.env
+logs/
+.git
+.gitignore
+Dockerfile
+.dockerignore
+README.md
