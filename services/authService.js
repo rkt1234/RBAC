@@ -5,7 +5,7 @@ import { generateToken } from '../utils/jwtUtils.js';
 const prisma = new PrismaClient();
 
 export const signup = async (userData) => {
-  const { name, email, password } = userData;
+  const { name, email, password, role } = userData;
 
   // Check if user already exists
   const existingUser = await prisma.user.findUnique({ where: { email } });
@@ -20,6 +20,7 @@ export const signup = async (userData) => {
       name,
       email,
       password: hashedPassword,
+      role: role
     },
   });
 
