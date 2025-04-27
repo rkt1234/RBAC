@@ -8,11 +8,17 @@ import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 import AdminRoute from './components/AdminRoute';
+import Navbar from './components/Navbar';
+import EditBlog from './pages/EditBlog';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
+        <ToastContainer position="top-center" autoClose={3000} />
+        <Navbar />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
@@ -26,6 +32,11 @@ function App() {
           <Route path="/create-blog" element={
             <AdminRoute>
               <CreateBlog />
+            </AdminRoute>
+          } />
+          <Route path="/edit-blog/:id" element={
+            <AdminRoute>
+              <EditBlog />
             </AdminRoute>
           } />
         </Routes>

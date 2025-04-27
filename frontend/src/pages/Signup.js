@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { signup } from '../api/auth';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { toast } from 'react-toastify';
 
 function Signup() {
   const navigate = useNavigate();
@@ -13,16 +14,19 @@ function Signup() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await signup(formData);
-      loginUser(res.data.token, res.data.user.role);
-      navigate('/');
-    } catch (err) {
-      setError(err.response?.data?.message || 'Signup failed');
-    }
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await signup(formData);
+    loginUser(res.data.token, res.data.user.role);
+    toast.success('Signup successful!');
+    navigate('/');
+  } catch (err) {
+    setError(err.response?.data?.message || 'Signup failed');
+    toast.error(err.response?.data?.message || 'Signup failed');
+  }
+};
+
 
   return (
     <div className="auth-form">

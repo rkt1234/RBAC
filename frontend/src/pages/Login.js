@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { login } from '../api/auth';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { toast } from 'react-toastify';
 
 function Login() {
   const navigate = useNavigate();
@@ -13,16 +14,19 @@ function Login() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await login(formData);
-      loginUser(res.data.token, res.data.user.role)
-      navigate('/');
-    } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
-    }
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await login(formData);
+    loginUser(res.data.token, res.data.user.role);
+    toast.success('Login successful!');
+    navigate('/');
+  } catch (err) {
+    setError(err.response?.data?.message || 'Login failed');
+    toast.error(err.response?.data?.message || 'Login failed');
+  }
+};
+
 
   return (
     <div className="auth-form">

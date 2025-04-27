@@ -96,3 +96,15 @@
   border: none;
   cursor: pointer;
 }
+
+.edit-btn {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: orange;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 4px;
+}
+

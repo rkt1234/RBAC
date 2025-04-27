@@ -15,3 +15,5 @@ API.interceptors.request.use((config) => {
 export const fetchBlogs = () => API.get('/');
 
 export const createBlog = (blogData) => API.post('/', blogData);
+
+export const updateBlog = (id, updatedData) => API.put(`/${id}`, updatedData);

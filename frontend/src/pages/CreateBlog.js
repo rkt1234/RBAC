@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createBlog } from '../api/blog';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function CreateBlog() {
   const [formData, setFormData] = useState({ title: '', content: '' });
@@ -15,9 +16,11 @@ function CreateBlog() {
     e.preventDefault();
     try {
       await createBlog(formData);
+      toast.success('Blog created successfully!');
       navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to create blog');
+      toast.error(err.response?.data?.message || 'Failed to create blog');
     }
   };
 
